@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sample page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script>
+        var app = angular.module("app",[]);
+        app.controller("employeeController", function ($scope,$http) {
+            function getEmployee() {
+                $http.get("/listEmployee").then(function (response) {
+                    console.log("list responce");
+                    $scope.listOfEmployee = response.data;
+                });
+            }
+
+            getEmployee();
+            $scope.catchme = function () {
+                $scope.message = "";
+				//alert($scope.txt1);
+                $http.get("/display_employee_details",{
+                    
+					params:{empno:$scope.txt1}
+					//alert();
+                }).then(function (res) {
+                    console.log("response remove");
+                   console.log(res.data[0].empname);
+				   //res.data
+				   $scope.txt2=res.data[0].empname;
+				   
+				   $scope.txt3=res.data[0].deptid;
+				   $scope.txt4=res.data[0].deptname;
+                });
+                //getEmployee();
+            }
+			$scope.remove = function(){
+			alert($scope.txt1);
+			$http.get("/update_employee_details",{params:{empno:$scope.txt1,empname:$scope.txt2,deptid:$scope.txt3,deptname:$scope.txt4}
+					}).then(function (res){
+					console.log("update");
+					});
+		}
+		});
+		
+    </script>
+</head>
+<body ng-app="app">
+    <div ng-controller="employeeController">
+        
+        <!-- {{listOfEmployee}} -->
+        <div ng-if='listOfEmployee'>
+            <table border="1">
+                <tr>
+                    <th>Employee name</th>
+                    <th>Employee no</th>
+                    <th>Deptid</th>
+					<th>Deptname</th>
+                </tr>
+                <tr ng-repeat = 'emp in listOfEmployee'>
+                    <td>{{emp.empname}}</td>
+                    <td>{{emp.empno}}</td>
+                    <td>{{emp.deptid}}</td>
+					<td>{{emp.deptname}}</td>
+                </tr>
+            </table>
+			
+
+        </div>
+        <br><br><input type="text" id="txt1" ng-model="txt1"  placeholder="Please Enter id here" ng-blur="catchme()"/> <span id="spn1"></span><br/><br/>
+	 <input type="text" id="txt2" ng-model="txt2" /><br/><br/>
+	 <input type="text" id="txt3" ng-model="txt3"/><br/><br/>
+	 <input type="text" id="txt4" ng-model="txt4"/><br/><br/>
+	 <input type="button" id="btn1" value="Update" ng-click="remove()"/>
+        {{message}}
+    </div>
+</body>
+</html>
