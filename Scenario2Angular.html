@@ -25,6 +25,7 @@
 					params:{empno:$scope.txt1}
 					//alert();
                 }).then(function (res) {
+				 if(res.data.length>0){
                     console.log("response remove");
                    console.log(res.data[0].empname);
 				   //res.data
@@ -32,6 +33,14 @@
 				   
 				   $scope.txt3=res.data[0].deptid;
 				   $scope.txt4=res.data[0].deptname;
+				   }	else{
+                      $scope.message = "Please Enter Correct Id Number";
+                      $scope.txt2='';
+                      $scope.txt3='';
+                      $scope.txt4='';
+             					}
+
+				  
                 });
                 //getEmployee();
             }
