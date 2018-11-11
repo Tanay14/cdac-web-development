@@ -50,6 +50,9 @@
 					}).then(function (res){
 					console.log("update");
 					});
+				$http.get("/listEmployee").then(function (response) {
+                    console.log("list responce");
+                    $scope.listOfEmployee = response.data;
 		}
 		});
 		
